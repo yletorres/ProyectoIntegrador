@@ -55,6 +55,7 @@ void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para 
 
         // Segunda pasada: mostrar colores
         printf("\r");
+        printf("%55s", " ");
         for (i = 0; i < 5; i++) {
             if (partida->palabraIntento[i] == palabraObjetivo[i]) {
                 printf("%s%c%s ", green, partida->palabraIntento[i], reset);
@@ -98,11 +99,16 @@ void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para 
 void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
     int cantidadLetras = 0;
     char letra;
-
+	printf("%55s", " ");
     while (1) {
         letra = getch();
-
-        if (letra == '\r') { // Si apreto enter sin tener 5 letras no pase nada
+       
+		if (letra == 0 || letra == 224 || letra==-32) {
+	    getch();  // leer y descartar el segundo código de la tecla especial
+		continue; // no hacer nada más
+		}		
+		
+        if (letra == '\r') { // Si apreto enter sin tener 5 letras no pasa nada
             if (cantidadLetras == longitudEsperada) break;
             else continue;
         }
@@ -124,5 +130,6 @@ void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
     }
 
     partida->palabraIntento[cantidadLetras] = '\0';
-    printf("\n");
 }
+
+

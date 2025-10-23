@@ -216,7 +216,6 @@ void saliendo(){
     } while(tecla != 13);// ENTER para volver al menú
 } 
 
-
 //implementacion del juego
 
 void modoUnJugador(){
@@ -234,6 +233,7 @@ void modoUnJugador(){
 	printf("\n=== MODO UN JUGADOR ===\n");
 	
 	tPartidaWordle partida;
+	int contadorPalabras=1;
 	
     while (!colaVacia(&colaPalabras)) {
         if (desencolar(&colaPalabras, palabraActual)) {
@@ -242,8 +242,11 @@ void modoUnJugador(){
         	printf("\n\n");
         	printf("%53s========================%s\n", red, reset);
 			printf("%53s|  %sADIVINA LA PALABRA%s  |%s\n", red, blue, red, reset);
+			printf("%53s|                      |%s\n", red, reset);
+			printf("%53s|    %sPALABRA %2d /%2d%s    |%s\n", red, blue, contadorPalabras, cantidad, red, reset);
         	printf("%53s========================%s\n", red, reset);
-            
+        	contadorPalabras++;
+            printf("\n");
 			jugarWordle(palabraActual, &partida);
         	getch();
 		}
