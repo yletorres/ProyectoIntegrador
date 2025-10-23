@@ -225,6 +225,7 @@ void modoUnJugador(){
 	elegirCantidadPalabras(&cantidad);
 	
 	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
+	
 	for(i=0; i<cantidad; i++){
 		palabraAleatoria(palabraActual, "palabras_5_letras.txt");
 		encolar(&colaPalabras, palabraActual);
@@ -233,14 +234,19 @@ void modoUnJugador(){
 	printf("\n=== MODO UN JUGADOR ===\n");
 	
 	tPartidaWordle partida;
-	inicializarPartida(&partida);
 	
     while (!colaVacia(&colaPalabras)) {
         if (desencolar(&colaPalabras, palabraActual)) {
-            printf("\nNueva palabra para adivinar:\n");
+            system("cls");
+        	encabezado();
+        	printf("\n\n");
+        	printf("%53s========================%s\n", red, reset);
+			printf("%53s|  %sADIVINA LA PALABRA%s  |%s\n", red, blue, red, reset);
+        	printf("%53s========================%s\n", red, reset);
             
 			jugarWordle(palabraActual, &partida);
-        }
+        	getch();
+		}
     }
 
     printf("\nFin del modo un jugador.\n");
@@ -270,7 +276,7 @@ void elegirCantidadPalabras(int* cantidad){
             if (tecla == 75 && *cantidad > 1) (*cantidad)--;    // Flecha izquierda
             else if (tecla == 77 && *cantidad < 10) (*cantidad)++; // Flecha derecha
         }
-
+	
     } while (tecla != 13);
 }
 

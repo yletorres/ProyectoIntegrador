@@ -35,10 +35,11 @@ void inicializarPartida(tPartidaWordle* partida){
 
 void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para mi misma: Llamar a encabezado y a system("cls"); antes 
 
+	inicializarPartida(partida);
+	
     while (partida->cantIntentos < INTENTOS_MAX && !partida->acierto) {
-        printf("\nIntento %d/%d: ", partida->cantIntentos + 1, INTENTOS_MAX);
+       // printf("\nIntento %d/%d: ", partida->cantIntentos + 1, INTENTOS_MAX);
 
-        // ? Ahora pasamos el struct completo
         leerIntentoMayus(partida, 5);
 
         int letrasCorrectas = 0;
@@ -53,6 +54,7 @@ void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para 
         }
 
         // Segunda pasada: mostrar colores
+        printf("\r");
         for (i = 0; i < 5; i++) {
             if (partida->palabraIntento[i] == palabraObjetivo[i]) {
                 printf("%s%c%s ", green, partida->palabraIntento[i], reset);
@@ -100,15 +102,15 @@ void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
     while (1) {
         letra = getch();
 
-        if (letra == '\r') { // ENTER
+        if (letra == '\r') { // Si apreto enter sin tener 5 letras no pase nada
             if (cantidadLetras == longitudEsperada) break;
             else continue;
         }
 
-        if (letra == '\b' && cantidadLetras > 0) { // BACKSPACE
+        if (letra == '\b' && cantidadLetras > 0) { // Borrar visualmente
             cantidadLetras--;
             partida->frecuenciaLetras[partida->palabraIntento[cantidadLetras] - 'A']--;
-            printf("\b \b");
+            printf("\b\b  \b\b");
             continue;
         }
 
@@ -116,7 +118,7 @@ void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
             letra = toupper(letra);
             partida->palabraIntento[cantidadLetras] = letra;
             partida->frecuenciaLetras[letra - 'A']++;  // Aumenta frecuencia
-            printf("%c", letra);
+            printf("%c ", letra);
             cantidadLetras++;
         }
     }
