@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ctype.h> //Lo incluyo por isalpha();
 #include <conio.h> //lo incluyo por getch();
+#include <string.h>
 #include "coloresWordle.h"
 
 #define INTENTOS_MAX 6
@@ -133,3 +134,35 @@ void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
 }
 
 
+void pedirPalabra(char palabra[]) {
+    int cantidadLetras = 0;
+    char letra;
+
+    while (1) {
+        letra = getch();
+
+        if (letra == 0 || letra == 224 || letra == -32) {
+            getch(); // tecla especial (flecha, F1, etc.)
+            continue;
+        }
+
+        if (letra == '\r') { // ENTER
+            if (cantidadLetras > 0 && cantidadLetras <= 5) break;
+            else continue;
+        }
+
+        if (letra == '\b' && cantidadLetras > 0) { // retroceso
+            cantidadLetras--;
+            printf("\b\b  \b\b");
+            continue;
+        }
+
+        if (isalpha(letra) && cantidadLetras < 5) {
+            letra = toupper(letra);
+            palabra[cantidadLetras++] = letra;
+            printf("* "); // imprime asterisco para ocultar la palabra
+        }
+    }
+
+    palabra[cantidadLetras] = '\0'; // cierra la cadena
+}

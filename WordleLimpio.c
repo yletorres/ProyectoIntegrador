@@ -2,6 +2,7 @@
 #include <conio.h> // para getch() (en funcion moverFlechas)
 #include <stdlib.h> // para system("cls") y rand();
 #include <time.h>
+#include <string.h>
 
 #include "colaWordle.h" //Tad cola
 #include "juegoWordle.h" //Tad wordle
@@ -19,7 +20,7 @@ void mostrarReglas();
 void saliendo();
 void modoUnJugador();
 void modoDosJugadores();
-void elegirCantidadPalabras(int* cantidad);
+void elegirCantidadPalabras(int* cantidad, int modo);
 
 int main() {
     srand(time(NULL));
@@ -221,7 +222,7 @@ void saliendo(){
 void modoUnJugador(){
 	int cantidad=1, i;
 	char palabraActual[6];
-	elegirCantidadPalabras(&cantidad);
+	elegirCantidadPalabras(&cantidad, 1);
 	
 	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
 	
@@ -256,7 +257,7 @@ void modoUnJugador(){
 	
 }
 
-void elegirCantidadPalabras(int* cantidad){
+void elegirCantidadPalabras(int* cantidad, int modo){
 	int tecla;
 	
 	do {
@@ -266,13 +267,16 @@ void elegirCantidadPalabras(int* cantidad){
         printf("\n\n");
     	printf("%53s========================%s\n", red, reset);
     	printf("%53s|                      |%s\n", red, reset);
-		printf("%53s|    %sMODO 1 JUGADOR%s    |%s\n", red, blue, red, reset);
+		printf("%53s|    %sMODO %d JUGADOR%s%s  |%s\n", red, blue, modo, (modo==1)? "  ":"ES", red, reset);
 		printf("%53s|   < %sPALABRAS: %2d %s>   |%s\n", red, blue, *cantidad, red, reset);
     	printf("%53s|                      |%s\n", red, reset);
     	printf("%53s========================%s\n", red, reset);
         printf("\n\n");
-        printf("Usa <- y -> para cambiar la cantidad de palabras. ENTER para confirmar.\n");
-
+        printf("%25sUsa <- y -> para cambiar la cantidad de palabras. ENTER para confirmar.\n", "");
+		if(modo==2){
+			printf("%25sNotese que la cantidad de palabras es la seleccionada para CADA jugador.\n","");
+		}
+		
         tecla = getch();
         if (tecla == 224) {
             tecla = getch();
@@ -285,4 +289,79 @@ void elegirCantidadPalabras(int* cantidad){
 
 
 void modoDosJugadores(){
+	int cantidad=1, i, adivinadosJugador[2]={0};
+	char palabraActual[6], nombreJugador[2][20];
+	
+	elegirCantidadPalabras(&cantidad, 2);
+	
+	
+	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
+	
+	for(i=1; i<3; i++){
+		system("cls");
+        encabezado();
+		
+		printf("\n\n");
+        printf("%53s========================%s\n", red, reset);
+		printf("%53s| %sNombre del Jugador %d%s |%s\n", red, blue,i, red, reset);
+		printf("%53s|                      |%s\n", red, reset);
+        printf("%53s========================%s\n%53s", red, reset, "");
+        
+        fgets(nombreJugador[i - 1], 20, stdin);
+
+        // Eliminar salto de línea al final del nombre
+        nombreJugador[i - 1][strcspn(nombreJugador[i - 1], "\n")] = '\0';
+        printf("\n");
+		
+	}
+
+	for(i=0; i<(cantidad*2); i++){
+		int turno=i%2;
+		int mitadRedondeada = (i+1 + 1) / 2; //funcion Techo
+		
+		system("cls");
+        encabezado();
+		
+		printf("\n\n");
+        printf("%53s========================%s\n", red, reset);
+		printf("%53s|%sIntroduzca la palabra %s|%s\n", red, blue, red, reset);
+		printf("%53s|                      |%s\n", red, reset);
+        printf("%53s========================%s\n", red, reset, "");
+        printf("%48s%sNOTA: Debe tener 5 letras.%s\n", "",yellow, reset);
+        printf("%48s%s%s digite la palabra %d:\n\n%55s", "",yellow, nombreJugador[turno], mitadRedondeada,"");
+        
+		pedirPalabra(palabraActual);
+		encolar(&colaPalabras, palabraActual);
+		
+		printf("\n\n%sPalabra guardada. Presiona una tecla para continuar...", reset);
+    	getch();
+	}
+	
+	printf("\n=== MODO DOS JUGADORES ===\n");
+	
+	tPartidaWordle partida;
+	int contadorPalabras=1;
+	
+    while (!colaVacia(&colaPalabras)) {
+        if (desencolar(&colaPalabras, palabraActual)) {
+            int techoContador=(contadorPalabras+1)/2;
+			int turno = (contadorPalabras-1)%2;	
+			
+			system("cls");
+        	encabezado();
+        	printf("\n\n");
+        	printf("%53s========================%s\n", red, reset);
+			printf("%53s|  %sADIVINA LA PALABRA%s  |%s\n", red, blue, red, reset);
+			printf("%53s|                      |%s\n", red, reset);
+			printf("%53s|    %sPALABRA %2d /%2d%s    |%s\n", red, blue, techoContador, cantidad, red, reset);
+        	printf("%53s========================%s\n", red, reset);
+        	printf("\n%48s%sTurno de %s\n%s", "", yellow, nombreJugador[turno], reset);
+        	
+        	contadorPalabras++;
+            printf("\n");
+			jugarWordle(palabraActual, &partida);
+        	if (partida.acierto) adivinadosJugador[turno]++;
+			getch();
+		}
+    }
 }
