@@ -12,7 +12,7 @@ typedef struct datosIntento{
     char palabraIntento[6]; // 5 letras + '\0'
     int cantIntentos;       
     bool acierto;           
-    int frecuenciaLetras[26];
+    int frecuenciaLetras[26]; //optativo
 } tPartidaWordle;  // Para mi misma: llamar a inicializarPartida() siempre antes de usar
 
 //Prototipo De Funciones;
