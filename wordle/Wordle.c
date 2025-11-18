@@ -7,6 +7,7 @@
 #include "colaWordle.h" //Tad cola
 #include "juegoWordle.h" //Tad wordle
 #include "coloresWordle.h" //libreria con colores
+#include "puntaje.h" //Tad puntajes un jugador
 
 tCola colaPalabras; // del TAD, cola de palabras
 
@@ -102,18 +103,28 @@ void menuInteractivo(){
 		if(opcion == 2) printf("%53s| %s> 2. REGLAS          %s|%s\n", red, green, red, reset);
     	else printf("%53s|   2. REGLAS          |%s\n", red, reset);
 
-    	if(opcion == 3) printf("%53s| %s> 3. SALIR           %s|%s\n", red, green, red, reset);
-    	else printf("%53s|   3. SALIR           |%s\n", red, reset);
+		if(opcion == 3) printf("%53s| %s> 3. RANKING         %s|%s\n", red, green, red, reset);
+    	else printf("%53s|   3. RANKING         |%s\n", red, reset);
+    	
+    	if(opcion == 4) printf("%53s| %s> 4. SALIR           %s|%s\n", red, green, red, reset);
+    	else printf("%53s|   4. SALIR           |%s\n", red, reset);
 
     	printf("%53s========================%s\n", red, reset);
 
-   		salir= moverFlechas(3, &opcion);
+   		salir= moverFlechas(4, &opcion);
     
     	if(salir) { // solo entra si presionó Enter
         	switch(opcion) {
             	case 1: menuJugar(); salir= 0; break; // vuelve a menuInteractivo
+            	
             	case 2: mostrarReglas(); salir= 0; break; // vuelve a menuInteractivo
-            	case 3: saliendo(); salir = 1; break;
+            	
+				case 3: 
+					system("cls");
+    				encabezado();
+					mostrarRanking(); salir=0; break; // Del tad de puntajes.
+				
+				case 4: saliendo(); salir = 1; break;
 			}
 		}
  	}
@@ -208,8 +219,6 @@ void saliendo(){
     printf("%53s|   %sGRACIAS POR JUGAR%s   |%s\n", red, blue, red, reset);
     printf("%53s|                       |%s\n", red, reset);
     printf("%53s=========================%s\n\n", red, reset);
-
-	
 	
     int tecla;
     do{
@@ -224,6 +233,20 @@ void modoUnJugador(){
 	char palabraActual[6];
 	elegirCantidadPalabras(&cantidad, 1);
 	
+	tJugador jugador; // del TAD puntaje
+	
+	system("cls");
+    encabezado();
+		
+	printf("\n\n");
+    printf("%53s========================%s\n", red, reset);
+	printf("%53s|  %sNombre del Jugador %s |%s\n", red, blue, red, reset);
+	printf("%53s|                      |%s\n", red, reset);
+    printf("%53s========================%s\n%48s", red, reset, "");
+	
+	cargarJugador(&jugador);
+	getch();
+	
 	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
 	
 	for(i=0; i<cantidad; i++){
@@ -231,7 +254,7 @@ void modoUnJugador(){
 		encolar(&colaPalabras, palabraActual);
 	}
 	
-	printf("\n=== MODO UN JUGADOR ===\n");
+	//=== MODO UN JUGADOR ===
 	
 	tPartidaWordle partida;
 	int contadorPalabras=1;
@@ -249,11 +272,12 @@ void modoUnJugador(){
         	contadorPalabras++;
             printf("\n");
 			jugarWordle(palabraActual, &partida);
+			if(partida.acierto) jugador.palabrasAdivinadas++;
         	getch();
 		}
     }
 
-    printf("\nFin del modo un jugador.\n");
+ 	actualizarPuntajeJugador(&jugador);
 	
 }
 
@@ -337,7 +361,7 @@ void modoDosJugadores(){
     	getch();
 	}
 	
-	printf("\n=== MODO DOS JUGADORES ===\n");
+	//=== MODO DOS JUGADORES ===
 	
 	tPartidaWordle partida;
 	int contadorPalabras=1;
@@ -365,3 +389,4 @@ void modoDosJugadores(){
 		}
     }
 }
+

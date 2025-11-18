@@ -19,8 +19,7 @@ typedef struct datosIntento{
 void inicializarPartida(tPartidaWordle* partida);
 void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida);
 void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada);
-//TO DO: COMPLETAR PROTOTIPOS
-
+void pedirPalabra(char palabra[]);
 //Fin de prototipado;
 
 // Implementadcion de Funciones
@@ -39,7 +38,7 @@ void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para 
 	inicializarPartida(partida);
 	
     while (partida->cantIntentos < INTENTOS_MAX && !partida->acierto) {
-       // printf("\nIntento %d/%d: ", partida->cantIntentos + 1, INTENTOS_MAX);
+       	printf("%48s%d/%d", "", partida->cantIntentos + 1, INTENTOS_MAX);
 
         leerIntentoMayus(partida, 5);
 
@@ -100,7 +99,7 @@ void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para 
 void leerIntentoMayus(tPartidaWordle* partida, int longitudEsperada) {
     int cantidadLetras = 0;
     char letra;
-	printf("%55s", " ");
+	printf("%4s", " ");
     while (1) {
         letra = getch();
        
