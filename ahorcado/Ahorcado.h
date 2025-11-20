@@ -1,6 +1,7 @@
 #include "prototipadoFuncionesAhorcado.h"
 #include "implementacionFuncionesAhorcado.h"
 
+
 /* 
 ====================================================================
                             FUNCIÓN PRINCIPAL
