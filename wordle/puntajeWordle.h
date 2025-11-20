@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define ARCHIVO_PUNTAJES "puntajes.bin"
+#define ARCHIVO_PUNTAJES "wordle/puntajes.bin"
 
 typedef struct {
     char nombre[30];
@@ -36,9 +36,12 @@ int buscarJugadorArchivo(const char *nombre, tJugador *jugador) {
 }
 
 void cargarJugador(tJugador *jugador) {
-    printf("Ingrese su nombre: ");
-    scanf(" %29[^\n]", jugador->nombre);
-
+	printf("Ingrese su nombre: ");
+	fflush(stdin); // limpiar buffer
+    fgets(jugador->nombre, 30, stdin);
+    jugador->nombre[strcspn(jugador->nombre, "\n")] = '\0'; // quitar salto de línea
+    
+    
     if (buscarJugadorArchivo(jugador->nombre, jugador)) {
         printf("\n\n\nBienvenido de nuevo, %s! Palabras adivinadas: %d\n", 
                jugador->nombre, jugador->palabrasAdivinadas);

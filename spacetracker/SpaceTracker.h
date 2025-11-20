@@ -14,8 +14,6 @@
 #include "score.h"
 #include "user.h"
 
-#include "../juegos.h"
-
 /* =======================================================
    PROTOTIPOS (todas las funciones definidas en este .c)
    ======================================================= */
@@ -146,7 +144,7 @@ void mostrarMenuUnico(const char *usuarioLogueado) {
 
 /* ---------- Mostrar usuarios guardados (usa archivo) ---------- */
 int mostrarUsuariosRegistrados(Usuario *lista, int max){
-    FILE* f=fopen("usuarios.txt","r");
+    FILE* f=fopen("spacetracker/usuarios.txt","r");
     if(!f){
         printf("\nNo hay usuarios registrados.\n");
         Sleep(1000);

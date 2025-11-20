@@ -105,7 +105,7 @@ void palabraAleatoria(char *palabra, const char *nombreArchivo) {
 
 
 
-/*Temporal*/
+/*Para depuración*/
 void mostrarNodo(tNodo* nodo){
 	if (nodo!=NULL){
 		printf("%-15s \n", nodo->palabra);

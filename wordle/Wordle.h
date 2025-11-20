@@ -7,7 +7,7 @@
 #include "colaWordle.h" //Tad cola
 #include "juegoWordle.h" //Tad wordle
 #include "coloresWordle.h" //libreria con colores
-#include "puntaje.h" //Tad puntajes un jugador
+#include "puntajeWordle.h" //Tad puntajes un jugador
 
 tCola colaPalabras; // del TAD, cola de palabras
 
@@ -23,15 +23,18 @@ void modoUnJugador();
 void modoDosJugadores();
 void elegirCantidadPalabras(int* cantidad, int modo);
 
-int main() {
-    srand(time(NULL));
+//==== REEMPLAZO EL MAIN ====
+
+void inicializarWordle(){
+	srand(time(NULL));
     crearCola(&colaPalabras);
     menuInteractivo();
-    
-    return 0;
-}
 
-//----------------------------------------------------------
+}
+//==== REEMPLAZO EL MAIN ====
+
+
+//==== Implementacion de funciones ====
 
 int moverFlechas(int max, int* opcion){
     int tecla = getch();
@@ -45,7 +48,7 @@ int moverFlechas(int max, int* opcion){
     return 0;
 }
 
-void encabezado(){
+void encabezado(){ //Encabezado "Wordle" en ascii
     printf("%s .----------------. %s .----------------. %s .----------------. %s .----------------. %s .----------------. %s .----------------. %s\n",
            red, green, yellow, blue, magenta, cyan, reset);
 
@@ -122,7 +125,8 @@ void menuInteractivo(){
 				case 3: 
 					system("cls");
     				encabezado();
-					mostrarRanking(); salir=0; break; // Del tad de puntajes.
+					mostrarRanking(); // Del tad de puntajes.
+					salir=0; break; // vuelve a menuInteractivo 
 				
 				case 4: saliendo(); salir = 1; break;
 			}
@@ -247,10 +251,10 @@ void modoUnJugador(){
 	cargarJugador(&jugador);
 	getch();
 	
-	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
+	vaciarCola(&colaPalabras); // Por seguridad
 	
 	for(i=0; i<cantidad; i++){
-		palabraAleatoria(palabraActual, "palabras_5_letras.txt");
+		palabraAleatoria(palabraActual, "wordle/palabras_5_letras.txt");
 		encolar(&colaPalabras, palabraActual);
 	}
 	
@@ -319,7 +323,7 @@ void modoDosJugadores(){
 	elegirCantidadPalabras(&cantidad, 2);
 	
 	
-	vaciarCola(&colaPalabras); //NOTA PARA MI MISMA: Por seguridad, no se si lo voy a dejar o no
+	vaciarCola(&colaPalabras); // Por seguridad
 	
 	for(i=1; i<3; i++){
 		system("cls");
@@ -340,7 +344,7 @@ void modoDosJugadores(){
 	}
 
 	for(i=0; i<(cantidad*2); i++){
-		int turno=i%2;
+		int turno=i%2; //Determina a que jugador le corresponde el turno
 		int mitadRedondeada = (i+1 + 1) / 2; //funcion Techo
 		
 		system("cls");

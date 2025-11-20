@@ -13,7 +13,7 @@ typedef struct datosIntento{
     int cantIntentos;       
     bool acierto;           
     int frecuenciaLetras[26]; //optativo
-} tPartidaWordle;  // Para mi misma: llamar a inicializarPartida() siempre antes de usar
+} tPartidaWordle;  //llamar a inicializarPartida() siempre antes de usar
 
 //Prototipo De Funciones;
 void inicializarPartida(tPartidaWordle* partida);
@@ -33,7 +33,7 @@ void inicializarPartida(tPartidaWordle* partida){
     }
 }
 
-void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { //Nota para mi misma: Llamar a encabezado y a system("cls"); antes 
+void jugarWordle(char palabraObjetivo[], tPartidaWordle* partida) { // Llamar a encabezado y a system("cls") antes 
 
 	inicializarPartida(partida);
 	
@@ -140,6 +140,8 @@ void pedirPalabra(char palabra[]) {
     while (1) {
         letra = getch();
 
+		// Ignora la bandera de teclas especiales de getch 
+		// Evita que se impriman letras por error
         if (letra == 0 || letra == 224 || letra == -32) {
             getch(); // tecla especial (flecha, F1, etc.)
             continue;
