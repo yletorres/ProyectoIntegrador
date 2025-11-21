@@ -1,4 +1,4 @@
-#ifndef FUNCIONES_H
+ #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
 #include <stdio.h>
@@ -152,12 +152,6 @@ char verificarGanador(tGrafoPonderado grafo) {
 }
 
 
-
-// ------------------------------------------------------------
-// AQUI ESTA LO QUE PEDISTE
-// EL MENU *DENTRO* DE iniciarJuego()
-// ------------------------------------------------------------
-
 void iniciarJuego() {
 
     int opcion;
@@ -202,15 +196,37 @@ void iniciarJuego() {
             case 1: {
                 char nombre1[50], nombre2[50];
 
-                setColor(10);
-                printf("Ingrese nombre del jugador X: ");
-                resetColor();
-                scanf("%49s", nombre1);
+                 // VALIDAR NOMBRE DEL JUGADOR X
+				do {
+				    setColor(10);
+				    printf("Ingrese nombre del jugador X: ");
+				    resetColor();
+				    scanf("%49s", nombre1);
+				
+				    if (usuarioExiste(nombre1)){
+				        setColor(12);
+				        printf("Ese nombre ya existe, ingrese otro.\n");
+				        resetColor();
+				    }
+				
+				} while (usuarioExiste(nombre1));
+				
+				
+				// VALIDAR NOMBRE DEL JUGADOR O
+				do {
+				    setColor(12);
+				    printf("Ingrese nombre del jugador O: ");
+				    resetColor();
+				    scanf("%49s", nombre2);
+				
+				    if (usuarioExiste(nombre2)){
+				        setColor(12);
+				        printf("Ese nombre ya existe, ingrese otro.\n");
+				        resetColor();
+				    }
+				
+				} while (usuarioExiste(nombre2));
 
-                setColor(12);
-                printf("Ingrese nombre del jugador O: ");
-                resetColor();
-                scanf("%49s", nombre2);
 
                 abrirArchivo();
                 escribirUsuario(nombre1);
