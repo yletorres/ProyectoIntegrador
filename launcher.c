@@ -6,15 +6,11 @@
 #include "wordle/Wordle.h"
 #include "spacetracker/SpaceTracker.h"
 #include "ahorcado/Ahorcado.h"
-
+#include "tateti/Tateti.h"
 
 void encabezadoJuegos();
 void menuLauncher();
 void saliendoLauncher();
-
-
-void inicializarTaTeTi();
-void inicializarAhorcado();
 
 int main() {
     menuLauncher();
@@ -112,8 +108,4 @@ void menuLauncher() {
 void saliendoLauncher(){
 }
 
-
-void inicializarTaTeTi(){
-	
-}
 

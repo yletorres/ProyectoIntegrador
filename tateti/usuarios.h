@@ -23,7 +23,7 @@ void cerrarArchivo(){
 }
 
 
-void mostrarUsuarios(){
+void mostrarUsuariosTateti(){
     FILE *f = fopen("tateti/usuarios.dat", "rb");
     if (f == NULL){
         printf("No se pudo abrir tateti/usuarios.dat.\n");
@@ -42,7 +42,7 @@ void mostrarUsuarios(){
 }
 
 
-void eliminarUsuario(char nombre[]){
+void eliminarUsuarioTateti(char nombre[]){
     FILE *f = fopen("tateti/usuarios.dat", "rb");
     if (f == NULL){
         printf("No se pudo abrir tateti/usuarios.dat para leer.\n");

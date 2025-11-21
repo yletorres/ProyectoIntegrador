@@ -1,7 +1,7 @@
 //libreria para implementar colores
 
-#ifndef COLORES_H
-#define COLORES_H
+#ifndef COLORESTATETI_H
+#define COLORESTATETI_H
 #include <windows.h>
 
 							/* LISTA DE COLORES CON EL NUMERO CORRESPONDIENTE.
@@ -13,17 +13,17 @@
 */
 
 
-void setColor(int color);
-void resetColor();
+void setColorTateti(int color);
+void resetColorTateti();
 
 //esta funcion es para elegir el color antes del printf, recibe un numero que le corresponde un color especifico.
-void setColor(int color) {
+void setColorTateti(int color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
 }
 
 //esta funcion es para cerrar hasta donde llega el color, sin esta funcion todo el programa se tiñe.
-void resetColor() {
+void resetColorTateti() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 7);  // el 7 es gris por defecto
 }
