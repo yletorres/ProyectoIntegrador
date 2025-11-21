@@ -73,5 +73,25 @@ void eliminarUsuario(char nombre[]){
     printf("Usuario eliminado (si existia).\n");
 }
 
+int usuarioExiste(char nombre[]){
+    FILE *f = fopen("tateti/usuarios.dat", "rb");
+    if (f == NULL){
+        return 0; // si no existe el archivo, no hay usuarios
+    }
+
+    char actual[50];
+
+    while (fread(actual, sizeof(char), 50, f) == 50){
+        if (strcmp(actual, nombre) == 0){
+            fclose(f);
+            return 1; // encontrado
+        }
+    }
+
+    fclose(f);
+    return 0; // no existe
+}
+
+
 #endif
- 
+  
