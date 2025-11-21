@@ -5,13 +5,21 @@
 
 FILE *archivo;
 
-void abrirArchivo(){
-    archivo = fopen("tateti/usuarios.dat", "ab");
+void abrirArchivo() {
+    archivo = fopen("tateti/usuarios.dat", "r+b");
+
+    if (archivo == NULL) {
+        archivo = fopen("tateti/usuarios.dat", "w+b");
+    }
+
     if (archivo == NULL){
         printf("Error al abrir tateti/usuarios.dat.\n");
+        return;
     }
-}
 
+    // mover el puntero al final para no sobrescribir
+    fseek(archivo, 0, SEEK_END);
+}
 
 void escribirUsuario(char nombre[]){
     fwrite(nombre, sizeof(char), 50, archivo);
@@ -23,7 +31,7 @@ void cerrarArchivo(){
 }
 
 
-void mostrarUsuarios(){
+void mostrarUsuariosTateti(){
     FILE *f = fopen("tateti/usuarios.dat", "rb");
     if (f == NULL){
         printf("No se pudo abrir tateti/usuarios.dat.\n");
@@ -42,7 +50,7 @@ void mostrarUsuarios(){
 }
 
 
-void eliminarUsuario(char nombre[]){
+void eliminarUsuarioTateti(char nombre[]){
     FILE *f = fopen("tateti/usuarios.dat", "rb");
     if (f == NULL){
         printf("No se pudo abrir tateti/usuarios.dat para leer.\n");
@@ -91,7 +99,6 @@ int usuarioExiste(char nombre[]){
     fclose(f);
     return 0; // no existe
 }
-
 
 #endif
  
