@@ -1,10 +1,8 @@
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
-#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-
 #include "colores.h"
 #include "usuarios.h"
 
@@ -42,13 +40,12 @@ char verificarGanador(tGrafoPonderado grafo);
 // ------------------------------------------------------------
 
 void mostrarBanner() {
-	system("cls");
     printf("\n");
     setColor(11);
     printf("=================================\n");
     printf("        BIENVENIDO AL TATETI     \n");
     printf("=================================\n");
-    resetColorTateti();
+    resetColor();
     printf("\n");
 }
 
@@ -74,7 +71,7 @@ void mostrarTablero(tGrafoPonderado grafo) {
             setColor(10);
 
         printf(" %c ", c == ' ' ? (i + '1') : c);
-        resetColorTateti();
+        resetColor();
 
         if ( (i + 1) % 3 != 0 )
             printf("|");
@@ -93,11 +90,11 @@ tArco pedirArco(int turno) {
         if (turno == 1) {
             setColor(10);
             printf("Turno de X - elegi casilla (1-9): ");
-            resetColorTateti();
+            resetColor();
         } else {
             setColor(12);
             printf("Turno de O - elegi casilla (1-9): ");
-            resetColorTateti();
+            resetColor();
         }
 
         if (scanf("%d", &pos) != 1) {
@@ -156,7 +153,8 @@ char verificarGanador(tGrafoPonderado grafo) {
 
 
 
-// -----------------------------------------------------------
+// ------------------------------------------------------------
+// AQUI ESTA LO QUE PEDISTE
 // EL MENU *DENTRO* DE iniciarJuego()
 // ------------------------------------------------------------
 
@@ -169,32 +167,32 @@ void iniciarJuego() {
 
         mostrarBanner();
 
-        setColorTateti(14);
+        setColor(14);
         printf("===== MENU PRINCIPAL =====\n");
-        resetColorTateti();
+        resetColor();
 
-        setColorTateti(11);
+        setColor(11);
         printf("1. Jugar Tateti\n");
         printf("2. Ver usuarios registrados\n");
         printf("3. Eliminar usuario\n");
         printf("4. Salir\n");
-        resetColorTateti();
+        resetColor();
 
-        setColorTateti(14);
+        setColor(14);
         printf("==========================\n");
-        resetColorTateti();
+        resetColor();
 
-        setColorTateti(10);
+        setColor(10);
         printf("Opcion: ");
-        resetColorTateti();
+        resetColor();
 
         valido = scanf("%d", &opcion);
 
         if (valido != 1) {
             while (getchar() != '\n');
-            setColorTateti(12);
+            setColor(12);
             printf("Ingreso invalido, solo numeros.\n");
-            resetColorTateti();
+            resetColor();
             opcion = 0;
             continue;
         }
@@ -204,15 +202,37 @@ void iniciarJuego() {
             case 1: {
                 char nombre1[50], nombre2[50];
 
-                setColorTateti(10);
-                printf("Ingrese nombre del jugador X: ");
-                resetColorTateti();
-                scanf("%49s", nombre1);
+                 // VALIDAR NOMBRE DEL JUGADOR X
+				do {
+				    setColor(10);
+				    printf("Ingrese nombre del jugador X: ");
+				    resetColor();
+				    scanf("%49s", nombre1);
+				
+				    if (usuarioExiste(nombre1)){
+				        setColor(12);
+				        printf("Ese nombre ya existe, ingrese otro.\n");
+				        resetColor();
+				    }
+				
+				} while (usuarioExiste(nombre1));
+				
+				
+				// VALIDAR NOMBRE DEL JUGADOR O
+				do {
+				    setColor(12);
+				    printf("Ingrese nombre del jugador O: ");
+				    resetColor();
+				    scanf("%49s", nombre2);
+				
+				    if (usuarioExiste(nombre2)){
+				        setColor(12);
+				        printf("Ese nombre ya existe, ingrese otro.\n");
+				        resetColor();
+				    }
+				
+				} while (usuarioExiste(nombre2));
 
-                setColorTateti(12);
-                printf("Ingrese nombre del jugador O: ");
-                resetColorTateti();
-                scanf("%49s", nombre2);
 
                 abrirArchivo();
                 escribirUsuario(nombre1);
@@ -235,9 +255,9 @@ void iniciarJuego() {
                     tArco jugada = pedirArco(turno);
 
                     while (!agregarUnArco(&grafo, jugada)) {
-                        setColorTateti(12);
+                        setColor(12);
                         printf("Casilla ocupada. Elegi otra: ");
-                        resetColorTateti();
+                        resetColor();
                         jugada = pedirArco(turno);
                     }
 
@@ -250,46 +270,43 @@ void iniciarJuego() {
 
                 if (ganador != ' ') {
                     if (ganador == 'X') {
-                        setColorTateti(12);
+                        setColor(12);
                         printf("GANO %s (X)\n", nombre1);
-                        resetColorTateti();
+                        resetColor();
                     } else {
-                        setColorTateti(10);
+                        setColor(10);
                         printf("GANO %s (O)\n", nombre2);
-                        resetColorTateti();
+                        resetColor();
                     }
                 } else {
-                    setColorTateti(14);
+                    setColor(14);
                     printf("Empate\n");
-                    resetColorTateti();
+                    resetColor();
                 }
-				getch();
+
                 break;
             }
 
             case 2:
-                mostrarUsuariosTateti();
-                getch();
-				break;
+                mostrarUsuarios();
+                break;
 
             case 3: {
                 char borrar[50];
                 printf("Nombre a eliminar: ");
                 scanf("%49s", borrar);
-                eliminarUsuarioTateti(borrar);
-                getch();
+                eliminarUsuario(borrar);
                 break;
             }
 
             case 4:
-                printf("Cerrando el juego... Presione enter.\n");
-                getch();
+                printf("Cerrando el juego...\n");
                 break;
 
             default:
-                setColorTateti(12);
+                setColor(12);
                 printf("Opcion invalida\n");
-                resetColorTateti();
+                resetColor();
         }
 
     } while (opcion != 4);
